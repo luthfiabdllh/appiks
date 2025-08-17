@@ -39,37 +39,37 @@ const features = [
   },
 ];
 
-const Feature16 = () => {
+const Feature = () => {
   return (
-    <section className="py-32">
-      <div className="container">
-        <div className="flex justify-center flex-col items-center">
-          <h2 className="text-3xl mb-4 font-medium lg:text-4xl text-center">
+    <section className="w-full bg-slate-200 py-24 sm:py-32 lg:py-40">
+      <div className="container px-4 sm:px-8 lg:px-16 mx-auto">
+        <div className="flex flex-col items-center text-center">
+          <h2 className="text-2xl sm:text-3xl mb-4 font-bold lg:text-4xl">
             Fitur Unggulan
           </h2>
-          <p className="mb-4 text-sm text-center text-muted-foreground lg:text-base max-w-lg">
+          <p className="mb-4 text-sm sm:text-base text-muted-foreground max-w-xl">
             Platform komprehensif untuk mendukung kesehatan mental siswa dengan
             berbagai fitur yang mudah digunakan
           </p>
         </div>
-        <div className="mt-14 grid gap-8 lg:mt-20 lg:grid-cols-2 p-16">
+        <div className="mt-10 sm:mt-14 lg:mt-20 grid gap-6 sm:gap-8 md:grid-cols-2 xl:grid-cols-3">
           {features.map((feature, idx) => (
             <div
               key={feature.title}
-              className="rounded-xl bg-accent p-6 flex flex-col lg:flex-row gap-6"
+              className="rounded-xl bg-accent p-6 flex flex-col md:flex-row gap-6 items-center md:items-start"
               aria-labelledby={`feature-title-${idx}`}
             >
-              <span className="flex items-center justify-center rounded-full bg-background w-14 h-14 mb-4 lg:mb-0">
+              <span className="flex items-center justify-center rounded-full bg-background w-14 h-14 mb-4 md:mb-0">
                 {feature.icon}
               </span>
-              <div className="flex-1 text-center lg:text-left">
+              <div className="flex-1 text-center md:text-left">
                 <h3
-                  className="mb-2 text-xl font-semibold"
+                  className="mb-2 text-lg sm:text-xl font-semibold"
                   id={`feature-title-${idx}`}
                 >
                   {feature.title}
                 </h3>
-                <p className="leading-7 text-muted-foreground">
+                <p className="leading-7 text-muted-foreground text-sm sm:text-base">
                   {feature.description}
                 </p>
               </div>
@@ -81,4 +81,4 @@ const Feature16 = () => {
   );
 };
 
-export { Feature16 };
+export { Feature };

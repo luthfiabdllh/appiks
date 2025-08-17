@@ -83,10 +83,10 @@ const Footer7 = ({
   legalLinks = defaultLegalLinks,
 }: Footer7Props) => {
   return (
-    <section className="py-32">
-      <div className="container">
-        <div className="flex w-full flex-col justify-between gap-72 lg:flex-row lg:items-start lg:text-left">
-          <div className="flex w-full flex-col justify-between gap-6 lg:items-start">
+    <section className="w-full bg-muted pt-12 pb-8 sm:pt-16 sm:pb-12 lg:pt-20 lg:pb-16">
+      <div className="container px-4 sm:px-2 lg:px-0 mx-auto">
+        <div className="flex w-full flex-col gap-10 lg:flex-row lg:items-start lg:text-left lg:gap-20">
+          <div className="flex w-full flex-col gap-6 lg:items-start">
             {/* Logo */}
             <div className="flex items-center gap-2 lg:justify-start">
               <Link href={logo.url}>
@@ -101,10 +101,10 @@ const Footer7 = ({
               </Link>
               <h2 className="text-xl font-semibold">{logo.title}</h2>
             </div>
-            <p className="text-muted-foreground max-w-[70%] text-sm">
+            <p className="text-muted-foreground max-w-md text-sm">
               {description}
             </p>
-            <ul className="text-muted-foreground flex items-center space-x-6">
+            <ul className="text-muted-foreground flex items-center gap-4 sm:gap-6">
               {socialLinks.map((social, idx) => (
                 <li key={idx} className="hover:text-primary font-medium">
                   <Link href={social.href} aria-label={social.label}>
@@ -114,7 +114,7 @@ const Footer7 = ({
               ))}
             </ul>
           </div>
-          <div className="grid w-full gap-6 md:grid-cols-3 lg:gap-20">
+          <div className="grid w-full gap-6 sm:grid-cols-2 md:grid-cols-3 lg:gap-16">
             {sections.map((section, sectionIdx) => (
               <div key={sectionIdx}>
                 <h3 className="mb-4 font-bold">{section.title}</h3>
@@ -132,7 +132,7 @@ const Footer7 = ({
             ))}
           </div>
         </div>
-        <div className="text-muted-foreground mt-8 flex flex-col justify-between gap-4 border-t py-8 text-xs font-medium md:flex-row md:items-center md:text-left">
+        <div className="text-muted-foreground mt-8 flex flex-col justify-between gap-4 border-t py-6 text-xs font-medium md:flex-row md:items-center md:text-left">
           <p className="order-2 lg:order-1">{copyright}</p>
           <ul className="order-1 flex flex-col gap-2 md:order-2 md:flex-row">
             {legalLinks.map((link, idx) => (

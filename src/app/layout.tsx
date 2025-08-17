@@ -18,9 +18,7 @@ export default function RootLayout({
         className="font-plus-jakarta-sans antialiased bg-white text-black min-h-screen"
         style={{ fontFamily: '"Plus Jakarta Sans Variable", sans-serif' }}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col min-h-screen">
-          {children}
-        </div>
+        <main className="w-full min-h-screen flex flex-col">{children}</main>
       </body>
     </html>
   );
