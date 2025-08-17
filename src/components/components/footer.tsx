@@ -29,30 +29,30 @@ interface Footer7Props {
 
 const defaultSections = [
   {
-    title: "Product",
+    title: "About",
     links: [
-      { name: "Overview", href: "#" },
-      { name: "Pricing", href: "#" },
-      { name: "Marketplace", href: "#" },
-      { name: "Features", href: "#" },
+      { name: "How it Works", href: "#" },
+      { name: "Featured", href: "#" },
+      { name: "Partnership", href: "#" },
+      { name: "Bussiness Relation", href: "#" },
     ],
   },
   {
-    title: "Company",
+    title: "Community",
     links: [
-      { name: "About", href: "#" },
-      { name: "Team", href: "#" },
+      { name: "Events", href: "#" },
       { name: "Blog", href: "#" },
-      { name: "Careers", href: "#" },
+      { name: "Podcast", href: "#" },
+      { name: "Invite a Friend", href: "#" },
     ],
   },
   {
-    title: "Resources",
+    title: "Socials",
     links: [
-      { name: "Help", href: "#" },
-      { name: "Sales", href: "#" },
-      { name: "Advertise", href: "#" },
-      { name: "Privacy", href: "#" },
+      { name: "Discord", href: "#" },
+      { name: "Instagram", href: "#" },
+      { name: "Twitter", href: "#" },
+      { name: "Facebook", href: "#" },
     ],
   },
 ];
@@ -132,9 +132,9 @@ const Footer7 = ({
             ))}
           </div>
         </div>
-        <div className="text-muted-foreground mt-8 flex flex-col justify-between gap-4 border-t py-6 text-xs font-medium md:flex-row md:items-center md:text-left">
+        <div className="mt-8 flex flex-col justify-between gap-4 border-t py-6 text-xs font-medium md:flex-row md:items-center md:text-left">
           <p className="order-2 lg:order-1">{copyright}</p>
-          <ul className="order-1 flex flex-col gap-2 md:order-2 md:flex-row">
+          <ul className="order-1 flex flex-col gap-4 md:order-2 md:flex-row">
             {legalLinks.map((link, idx) => (
               <li key={idx} className="hover:text-primary">
                 <Link href={link.href}> {link.name}</Link>

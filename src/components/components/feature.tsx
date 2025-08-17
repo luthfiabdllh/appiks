@@ -44,7 +44,7 @@ const Feature = () => {
     <section className="w-full bg-slate-200 py-24 sm:py-32 lg:py-40">
       <div className="container px-4 sm:px-8 lg:px-16 mx-auto">
         <div className="flex flex-col items-center text-center">
-          <h2 className="text-2xl sm:text-3xl mb-4 font-bold lg:text-4xl">
+          <h2 className="text-2xl sm:text-3xl mb-4 sm:mb-8 lg:text-5xl">
             Fitur Unggulan
           </h2>
           <p className="mb-4 text-sm sm:text-base text-muted-foreground max-w-xl">

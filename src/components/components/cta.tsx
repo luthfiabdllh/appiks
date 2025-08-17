@@ -12,15 +12,15 @@ const Cta = () => {
               height={500}
               src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-1.svg"
               alt="placeholder hero"
-              className="h-auto w-full max-w-[400px] sm:max-w-[500px] object-cover rounded-xl shadow-lg"
+              className="h-auto w-full max-w-[400px] sm:max-w-[500px] object-cover"
               priority
             />
           </div>
           <div className="flex flex-col items-center py-10 text-center md:items-start md:text-left md:py-20">
-            <h1 className="my-6 text-pretty text-3xl font-bold sm:text-4xl lg:text-6xl">
+            <h1 className="mt-6 mb-8 text-pretty text-3xl sm:text-4xl lg:text-6xl">
               Siap Memulai Perjalanan Kesehatan Mentalmu?
             </h1>
-            <p className="text-muted-foreground mb-8 max-w-xl text-base sm:text-lg lg:text-xl">
+            <p className="text-muted-foreground mb-10 max-w-xl text-base sm:text-lg lg:text-xl">
               Kenali mood-mu, ceritakan jika ada yang mengganggu, dan temukan
               dukungan yang kamu butuhkan di sini.
             </p>

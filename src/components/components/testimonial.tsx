@@ -33,7 +33,7 @@ const Testimonial = () => {
     <section className="w-full py-24 sm:py-36 lg:py-48">
       <div className="container px-4 sm:px-8 lg:px-16 mx-auto">
         <div className="flex flex-col items-center text-center">
-          <h2 className="text-2xl sm:text-3xl mb-4 font-bold lg:text-4xl">
+          <h2 className="text-2xl sm:text-3xl mb-4 sm:mb-8 lg:text-5xl">
             Bagaimana Appiks Membantu Mereka?
           </h2>
           <p className="mb-4 text-sm sm:text-base text-muted-foreground max-w-xl">
@@ -44,7 +44,7 @@ const Testimonial = () => {
           {cardItems.map((item) => (
             <Card
               key={item.name}
-              className="h-full flex flex-col shadow-sm"
+              className="h-full flex flex-col bg-muted"
             >
               <CardFooter>
                 <div className="flex gap-4 items-center">

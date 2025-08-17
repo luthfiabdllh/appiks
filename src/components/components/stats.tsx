@@ -42,7 +42,7 @@ const Stats = ({
     <section className="w-full py-32 sm:py-40 lg:py-52">
       <div className="container px-4 sm:px-8 lg:px-16 mx-auto">
         <div className="flex flex-col items-center text-center">
-          <h2 className="text-2xl sm:text-3xl mb-4 font-bold lg:text-4xl">
+          <h2 className="text-2xl sm:text-3xl mb-4 sm:mb-8 lg:text-5xl">
             {heading}
           </h2>
           <p className="mb-4 text-sm sm:text-base text-muted-foreground max-w-xl">

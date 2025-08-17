@@ -10,11 +10,11 @@ const Hero = () => {
             <h1 className="my-6 text-pretty text-3xl font-bold sm:text-4xl lg:text-6xl">
               Platform Kesehatan Mental untuk Siswa
             </h1>
-            <p className="text-muted-foreground mb-8 max-w-xl text-base sm:text-lg lg:text-xl">
+            <p className="text-muted-foreground mt-4 mb-12 max-w-xl text-base sm:text-lg lg:text-xl">
               Pantau mood harianmu, dapatkan dukungan, dan jaga kesehatan
               mentalmu bersama appiks.id
             </p>
-            <div className="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start">
+            <div className="flex w-full flex-col justify-center gap-4 sm:flex-row lg:justify-start">
               <Button className="rounded-full w-full sm:w-auto" size="lg">
                 Mulai Sekarang
               </Button>
@@ -33,7 +33,7 @@ const Hero = () => {
               height={500}
               src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-1.svg"
               alt="placeholder hero"
-              className="h-auto w-full max-w-[400px] sm:max-w-[500px] object-cover rounded-xl shadow-lg"
+              className="h-auto w-full max-w-[400px] sm:max-w-[500px] object-cover "
               priority
             />
           </div>
