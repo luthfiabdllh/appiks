@@ -47,10 +47,6 @@ interface NavbarProps {
       title: string;
       url: string;
     };
-    signup: {
-      title: string;
-      url: string;
-    };
   };
 }
 
@@ -115,8 +111,7 @@ const Navbar = ({
     },
   ],
   auth = {
-    login: { title: "Login", url: "#" },
-    signup: { title: "Sign up", url: "#" },
+    login: { title: "Login", url: "/login" },
   },
 }: NavbarProps) => {
   return (
@@ -200,10 +195,7 @@ const Navbar = ({
 
                 <div className="flex flex-col gap-3">
                   <Button asChild variant="outline">
-                    <a href={auth.login.url}>{auth.login.title}</a>
-                  </Button>
-                  <Button asChild>
-                    <a href={auth.signup.url}>{auth.signup.title}</a>
+                    <Link href={auth.login.url}>{auth.login.title}</Link>
                   </Button>
                 </div>
               </div>
@@ -260,9 +252,9 @@ const renderMobileMenuItem = (item: MenuItem) => {
   }
 
   return (
-    <a key={item.title} href={item.url} className="text-md font-semibold">
+    <Link key={item.title} href={item.url} className="text-md font-semibold">
       {item.title}
-    </a>
+    </Link>
   );
 };
 
