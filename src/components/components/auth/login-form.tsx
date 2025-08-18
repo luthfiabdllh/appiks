@@ -20,11 +20,12 @@ export function LoginForm({
               height={300}
               src="/image/loginPic.svg"
               alt="Image"
+              priority
               className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
           </div>
             <div className="p-4 md:px-10 md:py-14 flex flex-col items-center w-full">
-            <h3 className="text-3xl md:text-5xl text-center font-normal mb-8">Appiks</h3>
+            <Link href={"/"} className="text-3xl md:text-5xl text-center font-normal mb-8">Appiks</Link>
             <form className="border p-4 md:p-6 rounded-lg w-full max-w-xs">
               <div className="flex flex-col gap-6">
               <div className="flex flex-col">
