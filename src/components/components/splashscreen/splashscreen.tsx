@@ -1,5 +1,7 @@
 "use client";
+
 import Image from "next/image";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
@@ -24,32 +26,37 @@ export default function SplashScreen({
   showOnce = true,
   onFinish,
 }: SplashProps) {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false); 
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
+    const img = new window.Image();
+    img.src = imageSrc;
+    img.onload = () => {
+      setVisible(true);
+    };
+  }, [imageSrc]);
+
+  useEffect(() => {
+    if (!visible) return;
+
     if (showOnce) {
       try {
-        const seen = sessionStorage.getItem("appiks_splash_seen");
-        if (seen === "1") {
+        if (sessionStorage.getItem("appiks_splash_seen") === "1") {
           setVisible(false);
           onFinish?.();
           return;
         }
-      } catch {
-        // ignore storage errors (e.g. disabled)
-      }
+      } catch {}
     }
 
-    const enterDelay = shouldReduceMotion ? 0 : 100;
-    const start = window.setTimeout(() => {
-      setVisible(false); // mulai exit
-    }, enterDelay + duration);
+    const timer = window.setTimeout(() => {
+      setVisible(false);
+    }, duration);
 
-    return () => clearTimeout(start);
-  }, [duration, onFinish, showOnce, shouldReduceMotion]);
+    return () => clearTimeout(timer);
+  }, [visible, duration, showOnce, onFinish]);
 
-  // ketika exit complete, simpan flag jika showOnce
   function handleExitComplete() {
     if (showOnce) {
       try {
@@ -59,55 +66,58 @@ export default function SplashScreen({
     onFinish?.();
   }
 
-  // jika pengguna mengurangi motion, hilangkan transisi panjang
   const transition = shouldReduceMotion
-    ? { duration: 0.12 }
+    ? { duration: 0.1 }
     : { duration: 0.7 };
 
   return (
-    <AnimatePresence onExitComplete={handleExitComplete}>
-      {visible && (
-        <motion.div
-          key="splash"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={transition}
-          className="fixed inset-0 z-[9999] flex items-center justify-center"
-          aria-hidden={!visible}
-          role="dialog"
-          aria-label="Splash screen"
-        >
-          <div className="absolute inset-0 -z-10">
-            <Image
-              src={imageSrc}
-              alt="splash background"
-              fill
-              style={{ objectFit: "cover" }}
-              priority
-            />
-          </div>
+    <>
+      <Head>
+        <link rel="preload" as="image" href={imageSrc} />
+      </Head>
 
-          <div className="max-w-5xl w-full px-6 text-center">
-            <h1 className="text-4xl md:text-6xl font-semibold text-white drop-shadow-md leading-tight">
-              {title}
-            </h1>
-            <p className="mt-4 text-sm md:text-lg text-white/90 max-w-3xl mx-auto">
-              {subtitle}
-            </p>
+      <AnimatePresence onExitComplete={handleExitComplete}>
+        {visible && (
+          <motion.div
+            key="splash"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={transition}
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black"
+            role="dialog"
+            aria-label="Splash screen"
+          >
+            <div className="absolute inset-0 -z-10">
+              <Image
+                src={imageSrc}
+                alt=""
+                fill
+                priority
+                style={{ objectFit: "cover" }}
+                aria-hidden="true"
+              />
+            </div>
 
-            <div className="mt-12 mx-auto max-w-3xl rounded-xl border border-white/ bg-white/10 p-6 md:p-8 backdrop-blur-md shadow-lg">
-              <h3 className="text-lg md:text-2xl font-semibold text-white">
-                Quote of the Day
-              </h3>
-              <p className="mt-4 text-sm md:text-base text-white/90">{quote}</p>
-              <div className="mt-4 text-sm italic text-white/80">
-                - {author} -
+            <div className="max-w-5xl w-full px-6 text-center">
+              <h1 className="text-4xl md:text-6xl font-semibold text-white drop-shadow-md leading-tight">
+                {title}
+              </h1>
+              <p className="mt-4 text-sm md:text-lg text-white/90 max-w-3xl mx-auto">
+                {subtitle}
+              </p>
+
+              <div className="mt-12 mx-auto max-w-3xl rounded-xl border border-white/20 bg-white/10 p-6 md:p-8 backdrop-blur-md shadow-lg">
+                <h3 className="text-lg md:text-2xl font-semibold text-white">
+                  Quote of the Day
+                </h3>
+                <p className="mt-4 text-sm md:text-base text-white/90">{quote}</p>
+                <div className="mt-4 text-sm italic text-white/80">– {author} –</div>
               </div>
             </div>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
