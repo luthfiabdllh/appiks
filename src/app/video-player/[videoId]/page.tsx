@@ -11,8 +11,6 @@ import {
   ThumbsDown,
   Calendar,
   Clock,
-  Youtube,
-  ExternalLink,
 } from "lucide-react";
 
 // Mock data - dalam implementasi nyata, ambil dari API berdasarkan videoId
