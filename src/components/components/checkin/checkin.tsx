@@ -24,42 +24,80 @@ const STEPS = [
   { step: 2, title: "hasil", description: "ringkasan check-in" },
 ] as const;
 
-const RECOMMENDATIONS = [
+const SAFE_RECOMMENDATIONS = [
   {
     id: 1,
     title: "Mainkan Game",
     subtitle: "Bermain untuk meredakan stress",
     color: "from-pink-200 to-violet-200",
-    icon: "🎮",
+    icon: "/icon/ico-games.svg",
   },
   {
     id: 2,
     title: "Akses Video",
     subtitle: "Tonton video inspiratif",
     color: "from-green-100 to-green-50",
-    icon: "📺",
+    icon: "/icon/ico-video.svg",
   },
   {
     id: 3,
     title: "Isi Angket",
     subtitle: "Jawab pertanyaan berikut",
     color: "from-violet-100 to-violet-50",
-    icon: "📝",
+    icon: "/icon/ico-survey.svg",
   },
   {
     id: 4,
     title: "Quote of The Day",
     subtitle: "Jawab pertanyaan berikut",
     color: "from-violet-100 to-violet-50",
-    icon: "⍘",
+    icon: "/icon/ico-quotes.svg",
   },
 ] as const;
 
-const REC_ROUTES: Record<number, string> = {
+const UNSAFE_RECOMMENDATIONS = [
+  {
+    id: 5,
+    title: "Self Help",
+    subtitle: "Panduan untuk membantu diri sendiri",
+    color: "from-blue-100 to-blue-50",
+    icon: "/icon/ico-self-help.svg",
+  },
+  {
+    id: 6,
+    title: "Anger Management",
+    subtitle: "Kelola emosi marah dengan baik",
+    color: "from-red-100 to-red-50",
+    icon: "/icon/ico-anger-management.svg",
+  },
+  {
+    id: 7,
+    title: "Isi Angket",
+    subtitle: "Jawab pertanyaan berikut",
+    color: "from-violet-100 to-violet-50",
+    icon: "/icon/ico-survey.svg",
+  },
+  {
+    id: 8,
+    title: "Quote of The Day",
+    subtitle: "Inspirasi harian untuk motivasi",
+    color: "from-yellow-100 to-yellow-50",
+    icon: "/icon/ico-quotes.svg",
+  },
+] as const;
+
+const SAFE_ROUTES: Record<number, string> = {
   1: "/game",
   2: "/videos",
   3: "/survey",
   4: "/quote",
+} as const;
+
+const UNSAFE_ROUTES: Record<number, string> = {
+  5: "/self-help",
+  6: "/anger-management",
+  7: "/survey",
+  8: "/quote",
 } as const;
 
 const MOOD_OPTIONS = [
@@ -88,36 +126,41 @@ interface MoodData {
   status: string;
   color: string;
   statusIcon: React.ComponentType<{ className?: string }>;
+  isSafe: boolean;
 }
 
 const MOOD_MAP: Record<MoodKey, MoodData> = {
   gembira: {
-    iconPath: "/icon/ico-happy.svg",
+    iconPath: "/icon/ico-save.svg",
     title: "Pertahankan Energi Positifmu!",
     status: "Aman",
     color: "text-green-600",
     statusIcon: CircleCheck,
+    isSafe: true,
   },
   netral: {
-    iconPath: "/icon/ico-neutral.svg",
+    iconPath: "/icon/ico-save.svg",
     title: "Tetap Jaga Keseharianmu",
     status: "Aman",
     color: "text-green-600",
     statusIcon: CircleCheck,
+    isSafe: true,
   },
   sedih: {
-    iconPath: "/icon/ico-sad.svg",
+    iconPath: "/icon/ico-unsave.svg",
     title: "Terima Perasaanmu",
     status: "Tidak Aman",
     color: "text-red-600",
     statusIcon: XCircle,
+    isSafe: false,
   },
   marah: {
-    iconPath: "/icon/ico-angry.svg",
+    iconPath: "/icon/ico-unsave.svg",
     title: "Tenangkan Diri Terlebih Dahulu",
     status: "Tidak Aman",
     color: "text-red-600",
     statusIcon: XCircle,
+    isSafe: false,
   },
 } as const;
 
@@ -132,6 +175,23 @@ export default function CheckIn() {
   const selectedMoodData = useMemo(
     () => (mood ? MOOD_MAP[mood] : null),
     [mood]
+  );
+
+  const currentRecommendations = useMemo(
+    () => selectedMoodData?.isSafe ? SAFE_RECOMMENDATIONS : UNSAFE_RECOMMENDATIONS,
+    [selectedMoodData?.isSafe]
+  );
+
+  const currentRoutes = useMemo(
+    () => selectedMoodData?.isSafe ? SAFE_ROUTES : UNSAFE_ROUTES,
+    [selectedMoodData?.isSafe]
+  );
+
+  const recommendationTitle = useMemo(
+    () => selectedMoodData?.isSafe 
+      ? "Rekomendasi Konten Untukmu" 
+      : "Yuk, Kenali & Kelola Emosimu di Sini",
+    [selectedMoodData?.isSafe]
   );
 
   const headerTitle = useMemo(
@@ -161,6 +221,8 @@ export default function CheckIn() {
   // Event handlers
   const handleMoodSelect = useCallback((moodKey: MoodKey) => {
     setMood(moodKey);
+    // Reset selected recommendation when mood changes
+    setSelectedRec(null);
   }, []);
 
   const handleRecSelect = useCallback((recId: number) => {
@@ -174,7 +236,7 @@ export default function CheckIn() {
   const handleFinish = useCallback(() => {
     if (!selectedRec) return;
 
-    const route = REC_ROUTES[selectedRec];
+    const route = currentRoutes[selectedRec];
     if (!route) return;
 
     // Reset state
@@ -182,7 +244,7 @@ export default function CheckIn() {
     setSelectedRec(null);
     setCurrentStep(1);
     router.push(route);
-  }, [selectedRec, router]);
+  }, [selectedRec, router, currentRoutes]);
 
   const goNext = useCallback(() => {
     if (currentStep === 1 && !mood) return;
@@ -285,11 +347,11 @@ export default function CheckIn() {
   const renderRecommendations = () => (
     <div className="mt-6 sm:mt-8 text-left">
       <h4 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6 text-center sm:text-left">
-        Rekomendasi Konten Untukmu
+        {recommendationTitle}
       </h4>
 
       <div className="space-y-3 sm:space-y-4">
-        {RECOMMENDATIONS.map((rec) => {
+        {currentRecommendations.map((rec) => {
           const active = selectedRec === rec.id;
           return (
             <button
@@ -310,7 +372,13 @@ export default function CheckIn() {
                   className={`w-12 h-12 sm:w-14 sm:h-14 rounded-lg flex items-center justify-center bg-gradient-to-br ${rec.color} flex-shrink-0`}
                   aria-hidden="true"
                 >
-                  <span className="text-xl sm:text-2xl">{rec.icon}</span>
+                  <Image
+                    width={32}
+                    height={32}
+                    src={rec.icon}
+                    alt={rec.title}
+                    className="w-10 h-10 sm:w-12 sm:h-12"
+                  />
                 </div>
                 <div className="text-left min-w-0">
                   <div className="font-medium text-sm sm:text-base truncate">
