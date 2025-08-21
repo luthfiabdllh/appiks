@@ -144,7 +144,7 @@ export function VideoRecommendations() {
   const hasActiveFilters = !!selectedCategory;
 
   const handleVideoPlay = (videoId: number) => {
-    const video = videos.find(v => v.id === videoId);
+    const video = videos.find((v) => v.id === videoId);
     if (video?.youtubeId) {
       // Navigate to video player page or open YouTube
       router.push(`/video-player/${video.youtubeId}`);
@@ -269,36 +269,38 @@ export function VideoRecommendations() {
           </div>
         </div>
 
-        {/* Video Grid */}
-        {filteredVideos.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredVideos.map((video) => (
-              <VideoCard
-                key={video.id}
-                video={video}
-                onPlay={handleVideoPlay}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
-            <div className="max-w-md mx-auto">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Filter className="w-6 h-6 text-gray-400" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Tidak ada video ditemukan
-              </h3>
-              <p className="text-gray-600 mb-6">
-                Coba pilih kategori yang berbeda atau reset filter.
-              </p>
-              <Button variant="outline" onClick={clearAllFilters}>
-                <RotateCcw className="w-4 h-4 mr-2" />
-                Reset Filter
-              </Button>
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6">
+          {/* Video Grid */}
+          {filteredVideos.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {filteredVideos.map((video) => (
+                <VideoCard
+                  key={video.id}
+                  video={video}
+                  onPlay={handleVideoPlay}
+                />
+              ))}
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
+              <div className="max-w-md mx-auto">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Filter className="w-6 h-6 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Tidak ada video ditemukan
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Coba pilih kategori yang berbeda atau reset filter.
+                </p>
+                <Button variant="outline" onClick={clearAllFilters}>
+                  <RotateCcw className="w-4 h-4 mr-2" />
+                  Reset Filter
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
