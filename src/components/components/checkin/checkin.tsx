@@ -12,6 +12,8 @@ import {
   StepperTrigger,
   StepperTitle,
 } from "@/components/ui/stepper";
+import { Check, CircleCheck, XCircle } from "lucide-react";
+import Image from "next/image";
 
 const STEPS = [
   {
@@ -44,51 +46,78 @@ const RECOMMENDATIONS = [
     color: "from-violet-100 to-violet-50",
     icon: "📝",
   },
+  {
+    id: 4,
+    title: "Quote of The Day",
+    subtitle: "Jawab pertanyaan berikut",
+    color: "from-violet-100 to-violet-50",
+    icon: "⍘",
+  },
 ] as const;
 
 const REC_ROUTES: Record<number, string> = {
   1: "/game",
   2: "/videos",
   3: "/survey",
+  4: "/quote",
 } as const;
 
 const MOOD_OPTIONS = [
-  { key: "gembira", label: "Gembira", emoji: "😄" },
-  { key: "netral", label: "Netral", emoji: "🙂" },
-  { key: "sedih", label: "Sedih", emoji: "😢" },
-  { key: "marah", label: "Marah", emoji: "😡" },
+  {
+    key: "gembira",
+    label: "Gembira",
+    emoji: "😄",
+    icon: "/icon/ico-happy.svg",
+  },
+  {
+    key: "netral",
+    label: "Netral",
+    emoji: "🙂",
+    icon: "/icon/ico-neutral.svg",
+  },
+  { key: "sedih", label: "Sedih", emoji: "😢", icon: "/icon/ico-sad.svg" },
+  { key: "marah", label: "Marah", emoji: "😡", icon: "/icon/ico-angry.svg" },
 ] as const;
 
 // Types
 type MoodKey = (typeof MOOD_OPTIONS)[number]["key"];
 
 interface MoodData {
-  emoji: string;
+  iconPath: string;
   title: string;
   status: string;
-  color?: string;
+  color: string;
+  statusIcon: React.ComponentType<{ className?: string }>;
 }
 
 const MOOD_MAP: Record<MoodKey, MoodData> = {
   gembira: {
-    emoji: "😊",
+    iconPath: "/icon/ico-happy.svg",
     title: "Pertahankan Energi Positifmu!",
     status: "Aman",
+    color: "text-green-600",
+    statusIcon: CircleCheck,
   },
   netral: {
-    emoji: "🙂",
+    iconPath: "/icon/ico-neutral.svg",
     title: "Tetap Jaga Keseharianmu",
-    status: "Stabil",
+    status: "Aman",
+    color: "text-green-600",
+    statusIcon: CircleCheck,
   },
   sedih: {
-    emoji: "😢",
+    iconPath: "/icon/ico-sad.svg",
     title: "Terima Perasaanmu",
-    status: "Perlu Perhatian",
+    status: "Tidak Aman",
+    color: "text-red-600",
+    statusIcon: XCircle,
   },
   marah: {
-    emoji: "😡",
+    iconPath: "/icon/ico-angry.svg",
     title: "Tenangkan Diri Terlebih Dahulu",
-    status: "Waspada",
+    status: "Tidak Aman",
+    color: "text-red-600",
+    statusIcon: XCircle,
   },
 } as const;
 
@@ -178,7 +207,7 @@ export default function CheckIn() {
         Bagaimana perasaanmu hari ini?
       </h3>
       <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 px-4">
-        Pilih emoji yang paling menggambarkan suasana hatimu saat ini
+        Pilih ikon yang paling menggambarkan suasana hatimu saat ini
       </p>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mx-auto">
@@ -189,7 +218,7 @@ export default function CheckIn() {
               key={item.key}
               type="button"
               onClick={() => handleMoodSelect(item.key)}
-              className={`flex flex-col items-center justify-center gap-2 sm:gap-3 rounded-lg border p-3 sm:p-4 transition-all duration-200 min-h-[80px] sm:min-h-[100px]
+              className={`relative flex flex-col items-center justify-center gap-2 sm:gap-3 rounded-lg border p-3 sm:p-4 transition-all duration-200 min-h-[80px] sm:min-h-[100px]
                 ${
                   selected
                     ? "border-primary bg-primary/10 scale-105"
@@ -199,7 +228,18 @@ export default function CheckIn() {
               aria-pressed={selected}
               aria-label={`Pilih mood ${item.label}`}
             >
-              <span className="text-2xl sm:text-3xl">{item.emoji}</span>
+              {selected && (
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-primary rounded-sm flex items-center justify-center shadow-sm">
+                  <Check className="w-3 h-3 text-primary-foreground" />
+                </div>
+              )}
+              <Image
+                width="32"
+                height="32"
+                src={item.icon}
+                alt={item.label}
+                className="w-8 h-8 sm:w-10 sm:h-10"
+              />
               <span className="text-xs sm:text-sm font-medium">
                 {item.label}
               </span>
@@ -295,25 +335,44 @@ export default function CheckIn() {
     </div>
   );
 
-  const renderResults = () => (
-    <div className="text-center">
-      <div className="flex flex-col items-center gap-3 sm:gap-4">
-        <div className="text-5xl sm:text-6xl">
-          {selectedMoodData?.emoji || "—"}
-        </div>
-        <h3 className="text-lg sm:text-xl font-semibold px-4">
-          {selectedMoodData?.title || "Terima kasih"}
-        </h3>
-        <p className="text-sm sm:text-base text-muted-foreground">
-          Status mu :{" "}
-          <span className="font-medium">{selectedMoodData?.status || "—"}</span>
-        </p>
-      </div>
+  const renderResults = () => {
+    const StatusIcon = selectedMoodData?.statusIcon;
 
-      {renderQuoteCard()}
-      {renderRecommendations()}
-    </div>
-  );
+    return (
+      <div className="text-center">
+        <div className="flex flex-col items-center gap-3 sm:gap-4">
+          <Image
+            width="64"
+            height="64"
+            src={selectedMoodData?.iconPath || "/icon/ico-happy.svg"}
+            alt={selectedMoodData?.title || "Mood icon"}
+            className="w-16 h-16 sm:w-20 sm:h-20"
+          />
+          <h3 className="text-lg sm:text-xl font-semibold px-4">
+            {selectedMoodData?.title || "Terima kasih"}
+          </h3>
+          <div className="flex items-center gap-2 text-sm sm:text-base">
+            <span className="text-muted-foreground">Status mu :</span>
+            <div className="flex items-center gap-1">
+              <span
+                className={`font-medium ${
+                  selectedMoodData?.color || "text-muted-foreground"
+                }`}
+              >
+                {selectedMoodData?.status || "—"}
+              </span>
+              {StatusIcon && (
+                <StatusIcon className={`w-4 h-4 ${selectedMoodData?.color}`} />
+              )}
+            </div>
+          </div>
+        </div>
+
+        {renderQuoteCard()}
+        {renderRecommendations()}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background">
