@@ -84,6 +84,13 @@ const UNSAFE_RECOMMENDATIONS = [
     color: "from-yellow-100 to-yellow-50",
     icon: "/icon/ico-quotes.svg",
   },
+    {
+    id: 9,
+    title: "Curhat",
+    subtitle: "Tempat aman buat cerita apa aja. Yuk, ceritain isi hati kamu di sini ! ",
+    color: "from-emerald-100 to-emerald-50",
+    icon: "/icon/ico-vent.svg",
+  },
 ] as const;
 
 const SAFE_ROUTES: Record<number, string> = {
@@ -98,6 +105,7 @@ const UNSAFE_ROUTES: Record<number, string> = {
   6: "/anger-management",
   7: "/survey",
   8: "/quote",
+  9: "/vent",
 } as const;
 
 const MOOD_OPTIONS = [
