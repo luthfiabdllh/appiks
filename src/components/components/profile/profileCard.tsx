@@ -97,13 +97,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      {/* Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2">Profil Saya</h1>
-        <p className="text-muted-foreground">Kelola informasi pribadi mu</p>
-      </div>
-
+    <>
       {/* Profile Card */}
       <Card className="relative p-0">
         <CardHeader className="pb-4 p-0">
@@ -118,7 +112,7 @@ const ProfilePage = () => {
               </AvatarFallback>
             </Avatar>
 
-            <div className="flex-1">
+            <div className="flex-1 justify-center sm:justify-start text-center sm:text-left">
               <h2 className="text-2xl font-bold text-gray-900 mb-1">
                 {profileData.fullName}
               </h2>
@@ -457,7 +451,7 @@ const ProfilePage = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 };
 

@@ -154,153 +154,151 @@ export function VideoRecommendations() {
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Back Button */}
-        <div className="mb-6">
+    <div>
+      {/* Back Button */}
+      <div className="mb-6">
+        <Button
+          variant="ghost"
+          className="p-0 h-auto text-gray-600 hover:text-gray-900 hover:bg-transparent group"
+          onClick={handleGoToDashboard}
+        >
+          <ChevronLeft className="w-4 h-4 mr-1 group-hover:-translate-x-0.5 transition-transform" />
+          Ke Halaman Dashboard
+        </Button>
+      </div>
+
+      {/* Header */}
+      <div className="text-center mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+          Video Rekomendasi
+        </h1>
+        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+          Pilihan Video untuk Menemani Perjalananmu
+        </p>
+      </div>
+
+      {/* Filter Bar */}
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6 mb-8">
+        <div className="flex flex-col sm:flex-row mb-2 gap-4 items-start sm:items-center justify-between ">
+          {/* Filter Info */}
+          <div className="flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-gray-900">
+              Filter Video
+            </h3>
+          </div>
+
+          {/* Controls */}
           <Button
-            variant="ghost"
-            className="p-0 h-auto text-gray-600 hover:text-gray-900 hover:bg-transparent group"
-            onClick={handleGoToDashboard}
+            variant={showFilters ? "default" : "outline"}
+            size="sm"
+            onClick={() => setShowFilters(!showFilters)}
+            className="flex items-center gap-2"
           >
-            <ChevronLeft className="w-4 h-4 mr-1 group-hover:-translate-x-0.5 transition-transform" />
-            Ke Halaman Dashboard
+            <SlidersHorizontal className="w-4 h-4" />
+            Filter
           </Button>
         </div>
-
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
-            Video Rekomendasi
-          </h1>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Pilihan Video untuk Menemani Perjalananmu
-          </p>
-        </div>
-
-        {/* Filter Bar */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6 mb-8">
-          <div className="flex flex-col sm:flex-row mb-2 gap-4 items-start sm:items-center justify-between ">
-            {/* Filter Info */}
-            <div className="flex items-center gap-2">
-              <h3 className="text-lg font-semibold text-gray-900">
-                Filter Video
-              </h3>
-            </div>
-
-            {/* Controls */}
-            <Button
-              variant={showFilters ? "default" : "outline"}
-              size="sm"
-              onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center gap-2"
-            >
-              <SlidersHorizontal className="w-4 h-4" />
-              Filter
-            </Button>
-          </div>
-          <div className="mb-4">
-            {hasActiveFilters && (
-              <Badge variant="secondary" className="bg-blue-100 text-blue-700">
-                {selectedCategory}
-              </Badge>
-            )}
-          </div>
-
-          {/* Filter Section */}
-          {showFilters && (
-            <div className="border-t border-gray-100 pt-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Filter className="w-4 h-4 text-gray-600" />
-                  <span className="text-sm font-medium text-gray-700">
-                    Kategori
-                  </span>
-                </div>
-                {hasActiveFilters && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={clearAllFilters}
-                    className="text-gray-500 hover:text-gray-700 text-xs flex items-center gap-1"
-                  >
-                    <RotateCcw className="w-3 h-3" />
-                    Reset Filter
-                  </Button>
-                )}
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {categories.map((category) => (
-                  <Button
-                    key={category.name}
-                    variant="outline"
-                    size="sm"
-                    className={`transition-all duration-200 hover:scale-105 ${
-                      selectedCategory === category.name
-                        ? `${category.color} ring-2 ring-offset-1 ring-current border-current`
-                        : `${category.color} border-current`
-                    }`}
-                    onClick={() => handleCategoryClick(category.name)}
-                  >
-                    <span>{category.name}</span>
-                    <Badge
-                      variant="secondary"
-                      className="ml-2 bg-white/80 text-current h-5 px-1.5 text-xs"
-                    >
-                      {category.count}
-                    </Badge>
-                  </Button>
-                ))}
-              </div>
-            </div>
+        <div className="mb-4">
+          {hasActiveFilters && (
+            <Badge variant="secondary" className="bg-blue-100 text-blue-700">
+              {selectedCategory}
+            </Badge>
           )}
         </div>
 
-        {/* Results Summary */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="text-sm text-gray-600">
-            Menampilkan {filteredVideos.length} dari {videos.length} video
-            {hasActiveFilters && (
-              <span className="ml-1 text-blue-600 font-medium">
-                (kategori: {selectedCategory})
-              </span>
-            )}
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6">
-          {/* Video Grid */}
-          {filteredVideos.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {filteredVideos.map((video) => (
-                <VideoCard
-                  key={video.id}
-                  video={video}
-                  onPlay={handleVideoPlay}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
-              <div className="max-w-md mx-auto">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Filter className="w-6 h-6 text-gray-400" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Tidak ada video ditemukan
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  Coba pilih kategori yang berbeda atau reset filter.
-                </p>
-                <Button variant="outline" onClick={clearAllFilters}>
-                  <RotateCcw className="w-4 h-4 mr-2" />
+        {/* Filter Section */}
+        {showFilters && (
+          <div className="border-t border-gray-100 pt-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Filter className="w-4 h-4 text-gray-600" />
+                <span className="text-sm font-medium text-gray-700">
+                  Kategori
+                </span>
+              </div>
+              {hasActiveFilters && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearAllFilters}
+                  className="text-gray-500 hover:text-gray-700 text-xs flex items-center gap-1"
+                >
+                  <RotateCcw className="w-3 h-3" />
                   Reset Filter
                 </Button>
-              </div>
+              )}
             </div>
+
+            <div className="flex flex-wrap gap-2">
+              {categories.map((category) => (
+                <Button
+                  key={category.name}
+                  variant="outline"
+                  size="sm"
+                  className={`transition-all duration-200 hover:scale-105 ${
+                    selectedCategory === category.name
+                      ? `${category.color} ring-2 ring-offset-1 ring-current border-current`
+                      : `${category.color} border-current`
+                  }`}
+                  onClick={() => handleCategoryClick(category.name)}
+                >
+                  <span>{category.name}</span>
+                  <Badge
+                    variant="secondary"
+                    className="ml-2 bg-white/80 text-current h-5 px-1.5 text-xs"
+                  >
+                    {category.count}
+                  </Badge>
+                </Button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Results Summary */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="text-sm text-gray-600">
+          Menampilkan {filteredVideos.length} dari {videos.length} video
+          {hasActiveFilters && (
+            <span className="ml-1 text-blue-600 font-medium">
+              (kategori: {selectedCategory})
+            </span>
           )}
         </div>
+      </div>
+
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6">
+        {/* Video Grid */}
+        {filteredVideos.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {filteredVideos.map((video) => (
+              <VideoCard
+                key={video.id}
+                video={video}
+                onPlay={handleVideoPlay}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
+            <div className="max-w-md mx-auto">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Filter className="w-6 h-6 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Tidak ada video ditemukan
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Coba pilih kategori yang berbeda atau reset filter.
+              </p>
+              <Button variant="outline" onClick={clearAllFilters}>
+                <RotateCcw className="w-4 h-4 mr-2" />
+                Reset Filter
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
