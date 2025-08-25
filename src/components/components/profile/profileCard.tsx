@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Edit2, GraduationCap, Building, CalendarIcon, Eye, EyeOff, X, Check } from "lucide-react";
+import { Edit2, GraduationCap, Building, CalendarIcon, Eye, EyeOff, X, Check, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -54,6 +54,7 @@ const ProfilePage = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const [profileData, setProfileData] = useState<ProfileData>({
     fullName: "Marsha Bilqis Nasywaa",
@@ -100,21 +101,42 @@ const ProfilePage = () => {
     }
   };
 
-  const validatePassword = () => {
-    if (newPassword.length < 8) {
+  const validateNewPassword = (password: string) => {
+    if (password.length > 0 && password.length < 8) {
       setPasswordError("Kata sandi harus terdiri dari minimal 8 karakter.");
-      return false;
-    }
-    if (newPassword !== confirmPassword) {
-      setPasswordError("Konfirmasi kata sandi tidak cocok.");
       return false;
     }
     setPasswordError("");
     return true;
   };
 
+  const validateConfirmPassword = (password: string, confirmPass: string) => {
+    if (confirmPass.length > 0 && password !== confirmPass) {
+      setConfirmPasswordError("Konfirmasi kata sandi tidak cocok.");
+      return false;
+    }
+    setConfirmPasswordError("");
+    return true;
+  };
+
+  const handleNewPasswordChange = (value: string) => {
+    setNewPassword(value);
+    validateNewPassword(value);
+    if (confirmPassword.length > 0) {
+      validateConfirmPassword(value, confirmPassword);
+    }
+  };
+
+  const handleConfirmPasswordChange = (value: string) => {
+    setConfirmPassword(value);
+    validateConfirmPassword(newPassword, value);
+  };
+
   const handlePasswordChange = () => {
-    if (validatePassword()) {
+    const isNewPasswordValid = validateNewPassword(newPassword);
+    const isConfirmPasswordValid = validateConfirmPassword(newPassword, confirmPassword);
+    
+    if (isNewPasswordValid && isConfirmPasswordValid && newPassword.length >= 8) {
       // Handle password change logic here
       console.log("Password changed successfully");
       setPasswordDialogOpen(false);
@@ -127,6 +149,7 @@ const ProfilePage = () => {
     setNewPassword("");
     setConfirmPassword("");
     setPasswordError("");
+    setConfirmPasswordError("");
     setShowCurrentPassword(false);
     setShowNewPassword(false);
     setShowConfirmPassword(false);
@@ -184,6 +207,7 @@ const ProfilePage = () => {
         <CardContent className="p-6">
           {/* Form Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* ...existing form fields... */}
             {/* Nama Lengkap - Non-editable */}
             <div className="space-y-2">
               <Label className="text-sm font-medium text-gray-700">
@@ -491,13 +515,10 @@ const ProfilePage = () => {
                         <Input
                           type={showNewPassword ? "text" : "password"}
                           value={newPassword}
-                          onChange={(e) => {
-                            setNewPassword(e.target.value);
-                            if (passwordError) validatePassword();
-                          }}
+                          onChange={(e) => handleNewPasswordChange(e.target.value)}
                           placeholder="123"
                           className={`pr-10 ${
-                            passwordError && newPassword.length < 8
+                            passwordError
                               ? "border-red-300 bg-red-50"
                               : ""
                           }`}
@@ -509,16 +530,18 @@ const ProfilePage = () => {
                           className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                           onClick={() => setShowNewPassword(!showNewPassword)}
                         >
-                          {showNewPassword ? (
+                          {passwordError ? (
+                            <AlertTriangle className="h-4 w-4 text-red-500" />
+                          ) : showNewPassword ? (
                             <EyeOff className="h-4 w-4 text-gray-400" />
                           ) : (
                             <Eye className="h-4 w-4 text-gray-400" />
                           )}
                         </Button>
                       </div>
-                      {passwordError && newPassword.length < 8 && (
+                      {passwordError && (
                         <p className="text-sm text-red-500 flex items-center">
-                          <span className="mr-1">⚠</span>
+                          <AlertTriangle className="h-4 w-4 mr-2" />
                           {passwordError}
                         </p>
                       )}
@@ -533,12 +556,13 @@ const ProfilePage = () => {
                         <Input
                           type={showConfirmPassword ? "text" : "password"}
                           value={confirmPassword}
-                          onChange={(e) => {
-                            setConfirmPassword(e.target.value);
-                            if (passwordError) validatePassword();
-                          }}
+                          onChange={(e) => handleConfirmPasswordChange(e.target.value)}
                           placeholder="Konfirmasi kata sandi baru"
-                          className="pr-10"
+                          className={`pr-10 ${
+                            confirmPasswordError
+                              ? "border-red-300 bg-red-50"
+                              : ""
+                          }`}
                         />
                         <Button
                           type="button"
@@ -547,13 +571,21 @@ const ProfilePage = () => {
                           className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                         >
-                          {showConfirmPassword ? (
+                          {confirmPasswordError ? (
+                            <AlertTriangle className="h-4 w-4 text-red-500" />
+                          ) : showConfirmPassword ? (
                             <EyeOff className="h-4 w-4 text-gray-400" />
                           ) : (
                             <Eye className="h-4 w-4 text-gray-400" />
                           )}
                         </Button>
                       </div>
+                      {confirmPasswordError && (
+                        <p className="text-sm text-red-500 flex items-center">
+                          <AlertTriangle className="h-4 w-4 mr-2" />
+                          {confirmPasswordError}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -572,7 +604,13 @@ const ProfilePage = () => {
                       type="button"
                       onClick={handlePasswordChange}
                       className="flex-1 bg-blue-500 hover:bg-blue-600"
-                      disabled={!currentPassword || !newPassword || !confirmPassword}
+                      disabled={
+                        !currentPassword || 
+                        !newPassword || 
+                        !confirmPassword || 
+                        !!passwordError || 
+                        !!confirmPasswordError
+                      }
                     >
                       <Check className="w-4 h-4 mr-2" />
                       Simpan
