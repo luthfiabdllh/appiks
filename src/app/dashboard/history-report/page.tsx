@@ -1,9 +1,9 @@
 
-export default function dashboardPage() {
+export default function historyReportPage() {
   return (
     <>
       <div className="text-center mb-18">
-        db
+        history report
       </div>
     </>
   );
