@@ -31,9 +31,6 @@ interface ProfileData {
   noTelp: string;
   tanggalLahir: string;
   jenisKelamin: string;
-  agama: string;
-  namaWali: string;
-  noTelpWali: string;
   avatar?: string;
 }
 
@@ -50,9 +47,6 @@ const ProfilePage = () => {
     noTelp: "088123456",
     tanggalLahir: "2006-05-15",
     jenisKelamin: "Perempuan",
-    agama: "Islam",
-    namaWali: "Ahmad Nasywaa",
-    noTelpWali: "081234567890",
     avatar: "/avatar-placeholder.jpg",
   });
 
@@ -344,80 +338,6 @@ const ProfilePage = () => {
               ) : (
                 <Input
                   value={profileData.jenisKelamin}
-                  disabled
-                  className="bg-gray-50 text-gray-600"
-                />
-              )}
-            </div>
-
-            {/* Agama - Editable */}
-            <div className="space-y-2">
-              <Label className="text-sm font-medium text-gray-700">Agama</Label>
-              {isEditing ? (
-                <Select
-                  value={editData.agama}
-                  onValueChange={(value) => handleInputChange("agama", value)}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Pilih agama" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Islam">Islam</SelectItem>
-                    <SelectItem value="Kristen">Kristen</SelectItem>
-                    <SelectItem value="Katolik">Katolik</SelectItem>
-                    <SelectItem value="Hindu">Hindu</SelectItem>
-                    <SelectItem value="Buddha">Buddha</SelectItem>
-                    <SelectItem value="Konghucu">Konghucu</SelectItem>
-                  </SelectContent>
-                </Select>
-              ) : (
-                <Input
-                  value={profileData.agama}
-                  disabled
-                  className="bg-gray-50 text-gray-600"
-                />
-              )}
-            </div>
-
-            {/* Nama Wali - Editable */}
-            <div className="space-y-2">
-              <Label className="text-sm font-medium text-gray-700">
-                Nama Wali
-              </Label>
-              {isEditing ? (
-                <Input
-                  value={editData.namaWali}
-                  onChange={(e) =>
-                    handleInputChange("namaWali", e.target.value)
-                  }
-                  placeholder="Masukkan nama wali"
-                />
-              ) : (
-                <Input
-                  value={profileData.namaWali}
-                  disabled
-                  className="bg-gray-50 text-gray-600"
-                />
-              )}
-            </div>
-
-            {/* No Telp Wali - Editable */}
-            <div className="space-y-2">
-              <Label className="text-sm font-medium text-gray-700">
-                No Telp Wali
-              </Label>
-              {isEditing ? (
-                <Input
-                  value={editData.noTelpWali}
-                  onChange={(e) =>
-                    handleInputChange("noTelpWali", e.target.value)
-                  }
-                  placeholder="Masukkan nomor telepon wali"
-                  type="tel"
-                />
-              ) : (
-                <Input
-                  value={profileData.noTelpWali}
                   disabled
                   className="bg-gray-50 text-gray-600"
                 />
